@@ -57,22 +57,22 @@
 		<br>
 		<br>
 		To account for winding order, I calculated the winding order -- clockwise or counterclockwise, and converted to counterclockwise to simplify the test. If the winding order is negative, the points are given in clockwise direction, and positive for counterclockwise direction.
-		Further, I limited my rasterization to the bounding box of the triangle to optimize the process.
+		Further, I limited my rasterization to the bounding box of the triangle to optimize the process. This restricts sampling to withing the bounding box, and therefore means that this algorithm is no worse than one that checks within the bounding box of the triangle.
 		<br>
 		<br>
 		<!-- <p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p> -->
-		Below are the results for test images 3 through 6, after completing the <code>rasterize_triangle</code> function.
+		Below are the results for test images 4 through 6, after completing the <code>rasterize_triangle</code> function.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="images/task1_test3.png" width="400px"/>
-				  <figcaption>test3.svg</figcaption>
-				</td>
-				<td style="text-align: center;">
 				  <img src="images/task1_test4.png" width="400px"/>
 				  <figcaption>test4.svg</figcaption>
 				</td>
+				<td style="text-align: center;">
+					<img src="images/task1_test4_close.png" width="400px"/>
+					<figcaption>test4.svg</figcaption>
+				  </td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
@@ -87,11 +87,78 @@
 			</table>
 		</div>
 		
-		<h2>Task 2: Antialiasing by Supersampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h2>Task 2: Antialiasing by Supersampling</h2> 
+		In this task, I made use of the <code>sample_buffer</code> data structure which stores all the colors for each pixel at the higher sampling rate.
+
+		To start, I modified the <code>set_sample_rate</code> and <code>set_framebuffer_target</code> functions to dynamically resize the sample_buffer to the new sampling rate size: widt * height * sample_rate.
+		Next, I modified my <code>fill_pixel</code> function to fill in the sample_buffer with color c at the correct location inside the sample buffer w.r.t. the x and y coords at all <code>sample_rate</code> points inside that pixel.
+		I then modified my <code>rasterize_triangle</code> function to sample at the higher sampling rate per pixel.
+		<br><br> 
+		<code>
+			float px = x + (i % (int)sqrt(sample_rate)) / sqrt(sample_rate);
+			<br>
+			float py = y + (i / (int)sqrt(sample_rate)) / sqrt(sample_rate);
+ 		 </code><br>
+		 <br>
+
+		Then I set the value of sample_buffer with: <code> sample_buffer[(y * width + x) * sample_rate + i] = color;</code>. This finds the position within the 1d array for the respective index i and sets it to color.
+		
+		Finally, I modified <code>resolve_to_frame_buffer</code> to take the average of all the colors inside of 1 supersampled pixel for each r, g, b channel. 
+		
+		The major modifications to the rasterization pipeline included: <br>
+		<br>
+		- using the sample_buffer to store multiple samples per Pixel <br>
+		<br>
+		- rasterizing the triangle with the higher sampling rate <br>
+		<br>
+		- updating to average all the sample colors for each pixel and write the result to the framebuffer.<br>
+		<br>
+		
+		Essentially, we used supersampling to increase the sampling rate. We divide each pixel into sampling_rate amount of smaller pixels. Computing the average of these colors when writing to the frame buffer helps to remove jaggies and blur edges, because we are able to capture a "higher granuality" of the color at each pixel by increasing the sampling rate.
+		<br>
+		<br>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+				  <img src="images/task2_test4_1.png" width="400px"/>
+				  <figcaption>test4.svg sampling_rate=1 </figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/task2_test4_4.png" width="400px"/>
+				  <figcaption>test4.svg sampling_rate=4</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/task2_test4_16.png" width="400px"/>
+					<figcaption>test4.svg sampling_rate=16</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		<br>
+		<br>
+		As the sampling rate increases, the edges of the triangles become more blurred, reducing the appearance of jaggies with less isolated pixels. These results are observed because when we supersample we are able to capture the color at a higher granularity level, thus capturing more "in between" colors per pixel. This helps to smooth out the edges.
+
 
 		<h2>Task 3: Transforms</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		
+		In this task, I implemented the translate, scale, and rotate functions. Here I made cubeman make the robot pose.
+		
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+				  <img src="images/task3_robot.png" width="400px"/>
+				  <figcaption>robot.svg </figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/task3_my_robot.png" width="400px"/>
+				  <figcaption>my_robot.svg</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+
 
 		<h2>Task 4: Barycentric coordinates</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
