@@ -161,27 +161,118 @@
 
 
 		<h2>Task 4: Barycentric coordinates</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		In this task, I implemented barycentric coordinates for color interpolation across triangles. Essentially, barycentric coordinates are a way of representing a position inside a triangle as a weighted sum of the vertices of the triangle. Hence, the formula \((x, y) = \alpha A + \beta B + \gamma C\), where \(\alpha\), \(\beta\), and \(\gamma\) are the barycentric coordinates of the point \((x, y)\) with respect to the vertices \(A\), \(B\), and \(C\) of the triangle, and \(\alpha + \beta + \gamma = 1\).
+		<br><br>
+		In the below image is an example where the vertices of the triangle are red, green, and blue, and using barycentric coordinates we are able to interpolate the colors across the triangle to create a smooth gradient blend between the three colors.
+
+		<br><br>
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<tr>
+				<td style="text-align: center;">
+				  <img src="images/task4_triangle.png" width="400px"/>
+				  <figcaption>triangle.svg </figcaption>
+			  </tr>
+		</div>
+		<br><br>
+
+		Here is the result of the barycentric interpolation for test7.svg with default viewing parameters and a sample rate 1. 
+	
+		<br><br>
+
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<tr>
+				<td style="text-align: center;">
+				  <img src="images/task4_test7.png" width="400px"/>
+				  <figcaption>test7.svg </figcaption>
+			  </tr>
+		</div>
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Pixel sampling is essentially the process of mapping a 2D texture image onto a 3D surface. More specifically, it is "looking up" the color on the texture map (the uv coordinates) to apply to the surface. How I implemented pixel sampling was:
+
+		<br><br>
+		- I followed a similar process in the previous tasks where I created the bounding box and interpolated the barycentric coordinates <br>
+		<br>
+		- Then, I filled out the SampleParams struct as per the hint, setting the default mipmap level to zero as per the spec. <br>
+		<br>
+		- Called the helper functions, <code>sample_nearest</code> and <code>sample_bilinear</code> according to the psm value.
+		<br><br>
+		The sample_nearest function simply finds the closest integer coordinate on the texture map and grabs the corresponding color at the at location. In contrast, the sample_bilinear method finds the four nearest integer coordinates to the point in question and performs linear interpolation based on fractional distances to find the color at that point. Generally, bilinear sampling is provides smoother color transitions but is more computationally expensive.
+		
+		
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/task5_nearest_1.png" width="400px"/>
+				  <figcaption>svg/tex/map/test1.svg nearest sampling, 1 sample/pixel</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/task5_bilinear_1.png" width="400px"/>
+					<figcaption>svg/tex/map/test1.svg bilinear sampling, 1 sample/pixel</figcaption>
+				  </td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/task5_bilinear_16.png" width="400px"/>
+				  <figcaption>svg/tex/map/test1.svg nearest sampling, 16 sample/pixel</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/task5_bilinear_16.png" width="400px"/>
+				  <figcaption>svg/tex/map/test1.svg bilinear sampling, 16 sample/pixel</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		
+		<br><br>
+		
+		One can see from the screenshots that the bilinear sampling seems to have a smoother color transition if you look inside at the blue band across the middle of the close up picture. The biggest difference seems to appear between bilinear and nearest sampling methods when supersampling is set to 1 sample/pixel (no supersampling). As number of samples per pixel go up, the difference between the two sampling methods is less noticeable.
+
 
 		<h2>Task 6: "Level Sampling" with mipmaps for texture mapping</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+		Essentially, mipmaps are a set of precomputed and downscaled samples of the texture. This is useful for rendering far-away objects that do not require a high resolution. Level sampling is the process of selecting which mipmap level of the texture map to sample from.
+		
+		In discussing the tradeoffs between the three, supersampling, level sampling, and pixel sampling: <br><br>
+		- pixel sampling is where you sample directly from texture map onto surface. It is fast because we don't have to consider which mipmap level but can also use more memory than required for objects "far away" that don't require high resolution to render. Further there might be aliasing due to this.
+		<br><br>
+		- level sampling of sampling from mipmaps increases memory storage to store the mipmaps by x1.3, but is best at reducing aliasing. Level sampling might be slower because you have to precompute the mipmaps and store them.
+		<br><br>
+		- supersampling is very good at reducing aliasing, but might be more expensive to compute relative the number of samples per pixel that is chosen.
+
+		<br><br>
+		
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/task6.png" width="400px"/>
+				  <figcaption>L_ZERO, P_LINEAR</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/task6.png" width="400px"/>
+					<figcaption>L_ZERO, P_NEAREST</figcaption>
+				  </td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="images/task6.png" width="400px"/>
+				  <figcaption>L_NEAREST, P_NEAREST</figcaption>
+				</td>
+				<td style="text-align: center;">
+				  <img src="images/task6.png" width="400px"/>
+				  <figcaption>L_NEAREST, P_LINEAR</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
+		
+		<br><br>
+		Not sure if I did not select an interesting photo or if something is wrong with my code, but there do not seem to major noticeable differences between the 4 different combinations of sampling.
 
 		<h2>(Optional) Task 7: Extra Credit - Draw Something Creative!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
+		Did not do :(
 		</div>
 	</body>
 </html>
