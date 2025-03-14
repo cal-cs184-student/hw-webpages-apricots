@@ -28,12 +28,12 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 3 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: April Zhang and Harbani Jaggi</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-apricots/hw3/index.html">ccal-cs184-student.github.io/hw-webpages-apricots/hw3/index</a>
+		Link to GitHub repository: (TODO) <a href="https://github.com/cal-cs184-student/sp25-hw3-ah-hw3">github.com/cal-cs184-student/sp25-hw3-ah-hw3</a>
 		
 		<figure>
 			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
@@ -48,34 +48,37 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		Ray generation is the process of transforming a 2D image coordinate (x, y) into a 3D ray in the world space. First, we converted hFov and vFov to radians, then we mapped the (x, y) position to the sensor plane, keeping in mind that we are given the pixel (x, y) which is the coordinate of the bottom left of the pixel. We subtract 0.5 from both x and y to center the pixel at the center of the sensor plane (0, 0, -1). Then, we perform the mapping my multiplying by sensorWidth and sensorHeight (calculated via the given sensorplane coordinates). Finally, we create a ray with our calcuated sensor coordinate and set the near and far clipping plane per the spec implementation notes.
+		
+		<p>
+		As for the primitive intersection parts of the pipeline, we used Moller-Trumbore intersection algorithm to calculate the intersection of a ray with a triangle. We first calculated the edge vectors and the normal vector of the triangle, then we calculated the determinant of the matrix formed by the edge vectors and the ray direction. We then calculated the barycentric coordinates of the intersection point and checked if the point was inside the triangle. If it was, we updated the intersection point and the t value of the ray. 
+		
+		We also implemented the intersection of a ray with a sphere using the quadratic formula. We calculated the discriminant and checked if the ray intersected with the sphere. If it did, we updated the intersection point and the t value of the ray.
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
-		<div style="display: flex; flex-direction: column; align-items: center;">
+		Overall, we made use of barycentric coordinates in our computation as to avoid working with explicit plane equations which can be difficult to calculate.
+		</p>
+		
+		<p>Here are some small dae files rendered with normal shading at 480 x 360 size.</p>
+
+		<div>
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="cornell.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
-				</td>
-			  </tr>
+				<tr>
+					<td style="text-align: center;">
+					<img src="images/bench.png" width="400px"/>
+					<figcaption>../dae/sky/bench.dae</figcaption>
+					</td>
+					<td style="text-align: center;">
+					<img src="images/banana.png" width="400px"/>
+					<figcaption>../dae/keenan/banana.dae</figcaption>
+					</td>
+					<td style="text-align: center;">
+						<img src="images/blob.png" width="400px"/>
+						<figcaption>../dae/sky/blob.dae</figcaption>
+					</td>
+				</tr>
 			</table>
 		</div>
-		
+	
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
