@@ -32,13 +32,11 @@
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cal-cs184-student.github.io/hw-webpages-apricots/hw3/index.html">ccal-cs184-student.github.io/hw-webpages-apricots/hw3/index</a>
-		Link to GitHub repository: (TODO) <a href="https://github.com/cal-cs184-student/sp25-hw3-ah-hw3">github.com/cal-cs184-student/sp25-hw3-ah-hw3</a>
-		
-		<figure>
-			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-apricots/hw3/index.html">ccal-cs184-student.github.io/hw-webpages-apricots/hw3/index</a>
+
+		<br>
+
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw3-ah-hw3">github.com/cal-cs184-student/sp25-hw3-ah-hw3</a>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -50,10 +48,9 @@
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		Ray generation is the process of transforming a 2D image coordinate (x, y) into a 3D ray in the world space. First, we converted hFov and vFov to radians, then we mapped the (x, y) position to the sensor plane, keeping in mind that we are given the pixel (x, y) which is the coordinate of the bottom left of the pixel. We subtract 0.5 from both x and y to center the pixel at the center of the sensor plane (0, 0, -1). Then, we perform the mapping my multiplying by sensorWidth and sensorHeight (calculated via the given sensorplane coordinates). Finally, we create a ray with our calcuated sensor coordinate and set the near and far clipping plane per the spec implementation notes.
 		
-		<p>
-		As for the primitive intersection parts of the pipeline, we used Moller-Trumbore intersection algorithm to calculate the intersection of a ray with a triangle. We first calculated the edge vectors and the normal vector of the triangle, then we calculated the determinant of the matrix formed by the edge vectors and the ray direction. We then calculated the barycentric coordinates of the intersection point and checked if the point was inside the triangle. If it was, we updated the intersection point and the t value of the ray. 
+		<p>As for the primitive intersection parts of the pipeline, we used Moller-Trumbore intersection algorithm to calculate the intersection of a ray with a triangle. We first calculated the edge vectors and the normal vector of the triangle, then we calculated the determinant of the matrix formed by the edge vectors and the ray direction. We then calculated the barycentric coordinates of the intersection point and checked if the point was inside the triangle. If it was, we updated the intersection point and the t value of the ray. </p>
 		
-		We also implemented the intersection of a ray with a sphere using the quadratic formula. We calculated the discriminant and checked if the ray intersected with the sphere. If it did, we updated the intersection point and the t value of the ray.
+		<p>We also implemented the intersection of a ray with a sphere using the quadratic formula. We calculated the discriminant and checked if the ray intersected with the sphere. If it did, we updated the intersection point and the t value of the ray.
 
 		Overall, we made use of barycentric coordinates in our computation as to avoid working with explicit plane equations which can be difficult to calculate.
 		</p>
