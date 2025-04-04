@@ -50,7 +50,7 @@
 		<p>Here is the scence/pinned2.json. The top row shows screenshots from different angles, and the bottom row shows, with all different combinations of structural, shearing, and bending contraints active. 
 		<br>
 		<br>
-			<tr>
+		<tr>
 			<td style="text-align: center;">
 				<img src="images/1_0.png" width="400px"/>
 			</td>
@@ -80,7 +80,48 @@
 		</div>
 
 		<h2>Part 2: Simulation via numerical integration</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		The lower the spring constant, the more the cloth sags. Particularly at the end of the animation, you can see the ripples as the cloth falls down. On the other hand, changing ks to very large, causes the cloth to be more rigid and retain its shape more, at the end of the animation, you notice the cloth has less ripples or folds in it, because the spring constant, how tight the springs are, is higher. See below pictures:
+		<br><br>
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+					<img src="images/2_0.png" width="400px"/>
+					<figcaption> ks: 5 </figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/2_1.png" width="400px"/>
+					<figcaption>ks: 10000</figcaption>
+				</td>
+			</tr>
+		</table>
+		<br><br> As for density, when it is lower, there appears to less springs based on how the cloth falls -- it holds its shape more, and has less folds. When you increase density to 500 g/cm^2, the cloth is seems more fluid, and has more wrinkles as it falls.
+		<br><br>
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+					<img src="images/2_2.png" width="400px"/>
+					<figcaption> density: 1 g/cm^2</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/2_3.png" width="400px"/>
+					<figcaption> density: 500 g/cm^2</figcaption>
+				</td>
+			</tr>
+		</table>
+		<br><br> As for the damping coefficient, when it is lower, the springs seem to have more recoil, the cloth continues to sway back and forth even after falling down. When damping is very high, the opposite occurs, the springs appear to have little to no recoil and the cloth falls slowly like a piece of paper floating down.
+		<br><br>
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+					<img src="images/2_4.png" width="400px"/>
+					<figcaption> damping: 0% </figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/2_5.png" width="400px"/>
+					<figcaption> damping: 1% </figcaption>
+				</td>
+			</tr>
+		</table>
 
 		<h2>Part 3: Handling collisions with other objects</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -92,18 +133,8 @@
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h2>(Optional) Part 6: Extra Credit - Additional cloth simulation features!</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		N/A
 		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
 		</div>
 	</body>
 </html>
