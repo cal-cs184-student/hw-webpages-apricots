@@ -124,7 +124,39 @@
 		</table>
 
 		<h2>Part 3: Handling collisions with other objects</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		For the sphere collision, I first checked if the point mass would be inside the sphere or not. If it was, I would move the point mass to the surface of the sphere, by calculating a correction vector and adding that to the pm.last_position.
+
+		<br><br>
+		For the plane collision, I first checked if the point mass moves from one side of the plane to the other. If it does, I again calculated a correction vector and move the point mass back to the surface above the plane.
+
+		<br><br>
+	
+
+		<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			<tr>
+				<td style="text-align: center;">
+					<img src="images/3_0.png" width="400px"/>
+					<figcaption> ks: 5000 </figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/3_1.png" width="400px"/>
+					<figcaption>  ks: 500 </figcaption>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center;">
+					<img src="images/3_2.png" width="400px"/>
+					<figcaption>  ks: 50000 </figcaption>
+				</td>
+				<td style="text-align: center;"> 
+					<img src="images/3_3.png" width="400px"/>
+					<figcaption> cloth-plane collision </figcaption>
+				</td>
+			</tr>
+		</table>
+
+		The lower the ks, the more the cloth sags, and the more wrinkles there are. The higher the ks, the more rigid and firm the cloth is.
+
 
 		<h2>Part 4: Handling self-collisions</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
